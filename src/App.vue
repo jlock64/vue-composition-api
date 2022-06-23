@@ -1,26 +1,34 @@
 <template>
   <section class="container">
-    <h2>{{ user.name }}</h2>
-    <h2>{{ user.age }}</h2>
+    <h2>{{ userName }}</h2>
+    <h2>{{ age }}</h2>
     <button @click="setAge">Change Age</button>
+    <div>
+      <input type="text" placeholder="First Name" @input="setFirstName"/>
+      <input type="text" placeholder="Last Name" @input="setLastName"/>
+    </div>
   </section>
 </template>
 
 <script>
-// import { ref } from 'vue'; // ref is always used for things like strings and numbers and even objects but takes more work with objects (to include .value)
-import { reactive } from 'vue'; // reactive ONLY works with objects
+import { ref, computed } from 'vue'; // ref is always used for things like strings and numbers and even objects but takes more work with objects (to include .value)
+// import { reactive } from 'vue'; // reactive ONLY works with objects
 
 export default {
   setup() {
     // const uName = ref('Justin');
-    // const uAge = ref(31);
+    const uAge = ref(31);
+    const firstName = ref('');
+    const lastName = ref('');
 
-    const user = reactive({
-      name: 'Justin',
-      age: 31
-    })
+    const uName = computed(function() {
+      return firstName.value + ' ' + lastName.value
+    });
 
-    console.log(user);
+    // const user = reactive({
+    //   name: 'Justin',
+    //   age: 31
+    // })
 
     // setTimeout(function() {
     //   // uName.value = 'Just';
@@ -30,13 +38,23 @@ export default {
     // },2000)
 
     function setNewData() {
-      user.age = 32;
+      uAge.value = 32;
     }
 
-    return {
-      user: user,
-      setAge: setNewData
-    };
+    function setFirstName(event) {
+      firstName.value = event.target.value;
+    }
+
+    function setLastName(event) {
+      lastName.value = event.target.value;
+    }
+
+    return { 
+      userName: uName, 
+      age: uAge, 
+      setNewData, 
+      setFirstName, 
+      setLastName}
   }
   // data() {
   //   return {
